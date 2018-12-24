@@ -4,8 +4,8 @@
 # Follow Me Project
 [image1]: ./images/CNN.png
 [image2]: ./images/fcn.png 
-
-This
+[image3]: ./images/skipp_connect.png
+[image4]: .images/100_batch.png
 
 Convolutional Networks
 ---
@@ -28,36 +28,86 @@ The structure of FCN is divided into two parts:
 ![alt text][image2]
 
 
-A 1x1 convolution simply maps an input pixel with all it's channels to an output pixel, not looking at anything around itself. It is often used to reduce the number of depth channels, since it is often very slow to multiply volumes with extremely large depths.
-
-When we convert our last fully connected (FC) layer of the CNN to a 1x1 convolutional layer we choose our new conv layer to be big enough so that it will enable us to have this localization effect scaled up to our original input image size then activate pixels to indicate objects and their approximate locations in the scene as shown in above figure. replacement of fully-connected layers with convolutional layers presents an added advantage that during inference (testing your model), you can feed images of any size into your trained network.
-
-One problem with this approach is that we lose some information every time we do convolution (encoding or down-sampling); we keep the smaller picture (the local context) and lose the bigger picture (the global context) for example if we are using max-pooling to reduce the size of the input, and allow the neural network to focus on only the most important elements. Max pooling does this by only retaining the maximum value for each filtered area, and removing the remaining values.
+A 1x1 convolution simply maps an input pixel with all it's channels to an output. We use it here to reduce the number of depth channels.
 
 
+The last Fully Connected (FC) layer of the CNN is converted to a 1x1 convolutional layer. The new convolution layer is designed to be big enough so that it will allow the localization effect to be scaled up to our original input image size. From there, activate the pixels that indicate objects as well as their approximate locations within the scene. 
+
+Advantage
+---
+Replacing the fully-connected layers with convolutional layers allows the model to handle images of any size into the trained network.
+
+Disadvantage
+---
+Information is lost each time we encoding (or down-sample); 
+
+NOTE: The smaller picture is kept (the local context) and the bigger picture (the global context) is lost.
+
+Using max-pooling reduces the size of the input and allows the neural network to focus on only the most important elements. This accomplished by only retaining the maximum value for each filtered area, while removing the remaining values.
+
+Activations from previous layers (aka skip connections) are sumed/interpolated together with the up-sampled outputs when decoding from the previous layer. See diagram below.
+
+![alt text][image3]
+
+Bilinear Upsampling
+---
+By a factor of 2 is used in the decoder blocks to recover resolution then combines it with the previous encoders layers outputs to get the required up-size. 
+
+Batch normalization 
+---
+By normalizing the inputs to the network, the input layers to the network become normalize. 
+
+NOTE: "batch" normalization refers to the process of using mean and variance of the to normalize each layer's input. 
+
+Advantage
+--- 
+1. Networks train faster
+2. Higher learning rates
+3. Simplifies the creation of deeper networks
+4. Provides a bit of regularization.
+
+Summary
+---
+
+1. Encoder blocks: take inputs from previous layers, and compresses it down. Thus losing some of the resolution (i.e the bigger picture).
+
+2. 1x1 Convolution block: Reduces the depth and captures the global context of the scene.
+
+3. Decoder blocks: Receieves inputs from previous layers, decompress it using up-sampling and adds inputs from the previous encoder blocks through skip connections thus recovering some of the lost information.
+
+4. Softmax activation: Normal convolution layer takes outputs from last decoder block activates the output pixels to indicate the class and location of objects, thus semantic segmentation. 
 
 
 
-explains each layer of the network architecture and the role that it plays in the overall network. The student can
 
-demonstrate the benefits and/or drawbacks of different network architectures pertaining to this project and can 
+# Hyper-parameters 
 
-justify the current network with factual data. Any choice of 
-configurable parameters should also be explained in the network architecture.
-
-The student shall also provide a graph, table, diagram, illustration or figure for the overall network to serve as a reference for the reviewer.
-
-
-# Section 2 
-
-he student explains their neural network parameters including the values selected and how these values were obtained (i.e. how was hyper tuning performed? Brute force, etc.) Hyper parameters include, but are not limited to:
 
 Epoch
+---
+
+
 Learning Rate
+---
+
+
 Batch Size
+---
+
+The batch size chosen was 100 because testing at 40 and 65 produced error message. 
+
+![alt text][image4]
 
 
-All configurable parameters should be explicitly stated and justified.
+Workers
+---
+
+
+Validation 
+---
+
+
+
 
 
 # Section 3 
