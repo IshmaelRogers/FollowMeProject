@@ -2,7 +2,7 @@
 # Infinitely Deep Robotics Group 
 # www.idrg.io
 # Follow Me Project
-[image1]: ./images/CNN.png
+[image1]: ./images/CNN.jpg
 [image2]: ./images/fcn.png 
 [image3]: ./images/skipp_connect.png
 [image4]: .images/100_batch.png
