@@ -51,13 +51,13 @@ Activations from previous layers (aka skip connections) are sumed/interpolated t
 
 Bilinear Upsampling
 ---
-By a factor of 2 is used in the decoder blocks to recover resolution then combines it with the previous encoders layers outputs to get the required up-size. 
+2 factor bilinear upsampling is used in the decoder blocks to recover the lost resolution then combines it with the previous encoder layers outputs to get the original image size.  
 
 Batch normalization 
 ---
-By normalizing the inputs to the network, the input layers to the network become normalize. 
+By normalizing the inputs to the network, the input layers to the network also become normalize. 
 
-NOTE: "batch" normalization refers to the process of using mean and variance of the to normalize each layer's input. 
+NOTE: "batch" normalization refers to the process of using mean and variance to normalize each layer's input at every batch level. 
 
 Advantage
 --- 
@@ -78,18 +78,24 @@ Summary
 4. Softmax activation: Normal convolution layer takes outputs from last decoder block activates the output pixels to indicate the class and location of objects, thus semantic segmentation. 
 
 
-
-
 # Hyper-parameters 
 
 
 Epoch
 ---
+An epoch refers to the number of times the entire training dataset gets propagated through a given network.
 
+NOTE: One epoch is a single forward and backward pass of the whole dataset. 
+
+This method is used to increase the accuracy of the model without needing aditional data. 
 
 Learning Rate
 ---
+This parameter controls the size of the weights and biases. Based on excersies in the course my goal is to try the brute force method using the following values: 
 
+1. 0.01
+2. 0.001
+3. 0.0001
 
 Batch Size
 ---
@@ -107,39 +113,28 @@ Validation
 ---
 
 
+Steps
+---
+Refers to the number of batches of training images that are passed through the network in 1 epoch.
+
+How to determine steps per epoch 
+---
+Using dataset 1 and AWS
+
+% n = number of images
+n = 4131
+
+% bs = batch size
+bs = 100
+
+% spe = steps per epoch 
+
+spe = n /bs = # 41.31 
 
 
+Can the model track other objects?
+---
 
-# Section 3 
-
-The student demonstrates a clear understanding of 1 by 1 convolutions and where/when/how it should be used.
-
-The student demonstrates a clear understanding of a fully connected layer and where/when/how it should be used.
+To track different objects, change the mask data and re-train the network on a new target (cars, flowers, insects, etc.).
 
 
-
-
-# Section 4
-
-
-
-The student is able to identify the use of various reasons for encoding / decoding images, when it should be used, why it is useful, and any problems that may arise.
-
-
-
-
-# Section 5
-
-The student is able to clearly articulate whether this model and data would work well for following another object (dog, cat, car, etc.) instead of a human and if not, what changes would be required.
-
-
-
-
-
-
-# Section 6
-
-
-
-
-# Section 7 
